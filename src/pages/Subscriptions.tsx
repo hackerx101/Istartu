@@ -22,10 +22,11 @@ const PLANS = [
     basePrice: 11.99,
     features: [
       { text: "Public Profile", included: true },
+      { text: "Watch Videos & Streams", included: true },
       { text: "15 AI credits", included: true },
       { text: "Player card", included: true },
       { text: "Messaging", included: false },
-      { text: "Streaming", included: false }
+      { text: "HD Live Broadcasting", included: false }
     ]
   },
   {

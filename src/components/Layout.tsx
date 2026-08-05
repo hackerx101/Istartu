@@ -5,6 +5,7 @@ import { Home, Tag, MessageCircle, Calendar, Settings as SettingsIcon, Search, U
 import clsx from 'clsx';
 import { Helmet } from 'react-helmet-async';
 import AIFab from './AIFab';
+import { setIstartuSharedSession, getIstartuSharedSession } from '../lib/authSession';
 
 export default function Layout() {
   const [session, setSession] = useState<any>(null);
@@ -58,9 +59,12 @@ export default function Layout() {
 
       try {
         const p = JSON.parse(localStorage.getItem('demo_profile') || '{}');
-        setProfile({ ...defaultDemoProfile, ...p });
+        const activeProfile = { ...defaultDemoProfile, ...p };
+        setProfile(activeProfile);
+        setIstartuSharedSession({ user: demoUser }, activeProfile);
       } catch (e) {
         setProfile(defaultDemoProfile);
+        setIstartuSharedSession({ user: demoUser }, defaultDemoProfile);
       }
 
       try {
@@ -72,19 +76,26 @@ export default function Layout() {
       return;
     }
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session) fetchProfile(session.user.id);
+    // Check cross-domain shared session or restore
+    const restored = getIstartuSharedSession();
+
+    supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      const activeSession = currentSession || (restored?.sharedSession?.user ? { user: restored.sharedSession.user, access_token: restored.token } : null);
+      setSession(activeSession);
+      if (activeSession) {
+        fetchProfile(activeSession.user.id);
+      }
     });
 
     const {
       data: { subscription: authSub },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
       if (localStorage.getItem('demo_mode') === 'true') return;
       
-      setSession(session);
-      if (session) fetchProfile(session.user.id);
-      else {
+      setSession(newSession);
+      if (newSession) {
+        fetchProfile(newSession.user.id);
+      } else if (!restored?.token) {
         setProfile(null);
         setSubscription(null);
       }
@@ -107,21 +118,20 @@ export default function Layout() {
 
     try {
       const { data, error } = await supabase.from('profiles').select('*').eq('user_id', userId).single();
+      let activeProf = defaultProfile;
       if (data && !error) {
-        setProfile({ ...defaultProfile, ...data });
+        activeProf = { ...defaultProfile, ...data };
       } else {
         const userEmail = session?.user?.email?.split('@')[0] || 'Athlete';
-        setProfile({
-          ...defaultProfile,
-          full_name: userEmail
-        });
+        activeProf = { ...defaultProfile, full_name: userEmail };
       }
+      setProfile(activeProf);
+      setIstartuSharedSession(session || { user: { id: userId } }, activeProf);
     } catch (e) {
       const userEmail = session?.user?.email?.split('@')[0] || 'Athlete';
-      setProfile({
-        ...defaultProfile,
-        full_name: userEmail
-      });
+      const activeProf = { ...defaultProfile, full_name: userEmail };
+      setProfile(activeProf);
+      setIstartuSharedSession(session || { user: { id: userId } }, activeProf);
     }
 
     try {
@@ -210,6 +220,7 @@ export default function Layout() {
                 
                 {showDropdown && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-lg py-2 z-50">
+                    <Link to="/tv" onClick={() => setShowDropdown(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-medium">📺 TV & Streams</Link>
                     <Link to="/settings" onClick={() => setShowDropdown(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Manage Account</Link>
                     <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">Log Out</button>
                   </div>
@@ -227,6 +238,7 @@ export default function Layout() {
                 </button>
                 {showMobileMenu && (
                   <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-2xl shadow-lg py-2 z-50">
+                    <Link to="/tv" onClick={() => setShowMobileMenu(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50">📺 TV & Streams</Link>
                     <Link to="/plans/subscription" onClick={() => setShowMobileMenu(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50">Plans</Link>
                     <Link to="/partner/request" onClick={() => setShowMobileMenu(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">Request to be a Partner</Link>
                   </div>

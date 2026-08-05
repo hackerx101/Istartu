@@ -16,6 +16,7 @@ import Subscriptions from './pages/Subscriptions';
 import Checkout from './pages/Checkout';
 import PostView from './pages/PostView';
 import GarexcellLogin from './pages/Auth/GarexcellLogin';
+import GarexcellAuthPage from './pages/Auth/GarexcellAuthPage';
 
 // New features
 import TeamJoin from './pages/TeamJoin';
@@ -41,6 +42,7 @@ import PartnerRequest from './pages/PartnerRequest';
 import RedirectPage from './pages/RedirectPage';
 import PlayerCardAI from './pages/PlayerCardAI';
 import TestDemo from './pages/TestDemo';
+import TVRedirect from './pages/TVRedirect';
 
 // iStartU Main App Routes
 export default function App() {
@@ -59,6 +61,7 @@ export default function App() {
           <Route path="i/redirect" element={<RedirectPage />} />
           <Route path="auth/forgot-password" element={<ForgotPassword />} />
           <Route path="login/auth/client_id" element={<GarexcellLogin />} />
+          <Route path="login/garexcell/auth" element={<GarexcellAuthPage />} />
           
           <Route path="home" element={<Home />} />
           <Route path="offers" element={<Offers />} />
@@ -75,6 +78,7 @@ export default function App() {
           <Route path="join/team" element={<TeamJoin />} />
           <Route path="live/start" element={<LiveStart />} />
           <Route path="live/invite/:LiveId" element={<LiveInvite />} />
+          <Route path="tv" element={<TVRedirect />} />
           <Route path="refer/:PlayerId" element={<Referral />} />
           <Route path="rankings" element={<Rankings />} />
           

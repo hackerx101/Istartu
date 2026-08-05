@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
+import { setIstartuSharedSession } from '../../lib/authSession';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -8,36 +9,6 @@ export default function Login() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const handleDemoAccess = () => {
-    localStorage.setItem('demo_mode', 'true');
-    const demoProfile = {
-      id: 'demo-user-1',
-      user_id: 'demo-user-1',
-      full_name: 'Garexcell Elite Prospect',
-      IdNumber: '10027189',
-      position: 'Point Guard / Midfielder',
-      sport: 'Basketball & Soccer',
-      is_upgraded: true,
-      is_public: true,
-      role: 'recruit',
-      wallet_credits: 25.00,
-      bio: 'Top ranked athlete prospect (Class of 2027). Dual-sport athlete in Basketball & Soccer.',
-      avatar_url: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=200&auto=format&fit=crop',
-      ig_link: 'garexcell',
-      twitter_link: 'fsmec'
-    };
-    const demoSub = {
-      id: 'sub-demo-1',
-      user_id: 'demo-user-1',
-      plan_name: 'Pro Scout Tier',
-      is_upgraded: true,
-      renewal_date: '2028-12-31'
-    };
-    localStorage.setItem('demo_profile', JSON.stringify(demoProfile));
-    localStorage.setItem('demo_subscription', JSON.stringify(demoSub));
-    window.location.href = '/home';
-  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,15 +18,16 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
-        // Fallback to instant demo access if credentials fail, so user is never locked out!
-        handleDemoAccess();
+        setError(error.message);
+        setLoading(false);
       } else {
         setTimeout(() => {
           navigate('/home');
-        }, 1000);
+        }, 500);
       }
-    } catch (err) {
-      handleDemoAccess();
+    } catch (err: any) {
+      setError(err?.message || 'Login failed. Please try again.');
+      setLoading(false);
     }
   };
 
@@ -124,19 +96,6 @@ export default function Login() {
             {loading ? 'Logging in...' : 'Log In'}
           </button>
         </form>
-
-        <div className="relative my-6 text-center">
-          <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-100"></div></div>
-          <span className="relative bg-white px-3 text-xs text-gray-400 font-bold uppercase tracking-wider">or</span>
-        </div>
-
-        <button 
-          type="button" 
-          onClick={handleDemoAccess}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3.5 font-bold transition-all shadow-sm flex items-center justify-center gap-2"
-        >
-          🚀 Instant Demo Access (No Account Required)
-        </button>
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Don't have an account? <Link to="/auth/signup" className="text-black font-medium hover:underline">Sign up</Link>

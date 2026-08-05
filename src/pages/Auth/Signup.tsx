@@ -192,22 +192,6 @@ export default function Signup() {
               </button>
             </form>
 
-            <div className="relative my-6 text-center">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-gray-100"></div></div>
-              <span className="relative bg-white px-3 text-xs text-gray-400 font-bold uppercase tracking-wider">or</span>
-            </div>
-
-            <button 
-              type="button" 
-              onClick={() => {
-                localStorage.setItem('demo_mode', 'true');
-                window.location.href = '/home';
-              }}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3.5 font-bold transition-all shadow-sm flex items-center justify-center gap-2"
-            >
-              🚀 Instant Demo Access (No Account Required)
-            </button>
-
             <p className="text-center text-sm text-gray-500 mt-6">
               Already have an account? <Link to="/auth/login" className="text-black font-medium hover:underline">Log in</Link>
             </p>
