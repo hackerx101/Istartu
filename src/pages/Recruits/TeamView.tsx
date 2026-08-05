@@ -17,18 +17,10 @@ export default function TeamView() {
           if (data && !error) {
             setRecruit(data);
           } else {
-            setRecruit({
-              full_name: 'Garexcell Scouting Partner',
-              bio: 'Official global partner scouting organization on FSMEC Network.',
-              team_id: TeamId
-            });
+            setRecruit(null);
           }
         } catch (e) {
-          setRecruit({
-            full_name: 'Garexcell Scouting Partner',
-            bio: 'Official global partner scouting organization on FSMEC Network.',
-            team_id: TeamId
-          });
+          setRecruit(null);
         }
         setLoading(false);
       }

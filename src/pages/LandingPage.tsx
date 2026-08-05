@@ -45,14 +45,13 @@ export default function LandingPage() {
       try {
         const { data, error } = await supabase
           .from('profiles')
-          .select('IdNumber, full_name, avatar_url, position')
+          .select('IdNumber, user_id, full_name, avatar_url, position, is_upgraded, role')
           .or(`full_name.ilike.%${searchQuery}%,IdNumber.ilike.%${searchQuery}%`)
-          .limit(8);
+          .limit(10);
 
-        if (data && !error) {
-          setSuggestions(data);
-          setShowSuggestions(data.length > 0);
-        }
+        const list = (data && !error) ? data : [];
+        setSuggestions(list);
+        setShowSuggestions(true);
       } catch (err) {
         console.error("Suggestion fetch error:", err);
       }
@@ -70,7 +69,7 @@ export default function LandingPage() {
     setIsSearching(true);
     let results: any[] = [];
     try {
-      let query = supabase.from('profiles').select('IdNumber, full_name, avatar_url, position, is_public');
+      let query = supabase.from('profiles').select('IdNumber, user_id, full_name, avatar_url, position, is_upgraded, role, is_public');
       if (/^\d+$/.test(searchQuery)) {
         query = query.eq('IdNumber', searchQuery);
       } else {
@@ -80,19 +79,6 @@ export default function LandingPage() {
       if (data && !error) results = data;
     } catch (err) {
       console.warn("Search query caught:", err);
-    }
-    
-    if (results.length === 0) {
-      // Provide fallback search result if search query matches demo IDs or athlete keywords
-      if (searchQuery.includes('10027189') || searchQuery.toLowerCase().includes('demo') || searchQuery.toLowerCase().includes('pro') || /^\d+$/.test(searchQuery)) {
-        results = [{
-          IdNumber: searchQuery.trim(),
-          full_name: 'Garexcell Top Prospect',
-          position: 'Point Guard',
-          avatar_url: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=200&auto=format&fit=crop',
-          is_public: true
-        }];
-      }
     }
 
     setSearchResults(results);
@@ -160,25 +146,31 @@ export default function LandingPage() {
                 {suggestions.length > 0 ? (
                   suggestions.map((suggestion) => (
                     <button
-                      key={suggestion.IdNumber}
+                      key={suggestion.IdNumber || suggestion.user_id}
                       onClick={() => {
                         setSearchQuery(suggestion.full_name);
                         setShowSuggestions(false);
-                        navigate(`/player/${suggestion.IdNumber}`);
+                        navigate(`/player/${suggestion.IdNumber || suggestion.user_id}`);
                       }}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-gray-50 rounded-2xl transition-colors text-left"
+                      className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-2xl transition-colors text-left"
                     >
-                      <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden shrink-0">
-                        {suggestion.avatar_url ? (
-                          <img src={suggestion.avatar_url} alt={suggestion.full_name} className="w-full h-full object-cover" />
-                        ) : (
-                          <User className="w-5 h-5 m-auto text-gray-400 mt-2.5" />
-                        )}
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <div className="w-10 h-10 rounded-full bg-gray-100 overflow-hidden shrink-0 border border-gray-200">
+                          {suggestion.avatar_url ? (
+                            <img src={suggestion.avatar_url} alt={suggestion.full_name} className="w-full h-full object-cover" />
+                          ) : (
+                            <User className="w-5 h-5 m-auto text-gray-400 mt-2.5" />
+                          )}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-bold text-sm text-gray-900 truncate">{suggestion.full_name}</div>
+                          <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{suggestion.position || 'Athlete'} • ID: {suggestion.IdNumber || suggestion.user_id}</div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-bold text-sm text-gray-900">{suggestion.full_name}</div>
-                        <div className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">{suggestion.position || 'Athlete'} • #{suggestion.IdNumber}</div>
-                      </div>
+
+                      <span className={`text-[9px] font-black uppercase px-2.5 py-1 rounded-full shrink-0 ${suggestion.is_upgraded || suggestion.role === 'recruit' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-gray-100 text-gray-700 border border-gray-200'}`}>
+                        {suggestion.is_upgraded || suggestion.role === 'recruit' ? '🏆 Ranked Prospect' : '👤 Profile'}
+                      </span>
                     </button>
                   ))
                 ) : (
@@ -192,22 +184,28 @@ export default function LandingPage() {
           </AnimatePresence>
 
           {/* Search Results */}
-          {searchResults.length > 0 && !showSuggestions && (
+          {!showSuggestions && isSearching === false && searchResults.length > 0 && (
             <div className="absolute top-full left-0 right-0 mt-4 bg-white border border-gray-100 rounded-3xl p-4 shadow-2xl flex flex-col gap-2 z-50 max-h-[70vh] overflow-y-auto">
-              <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-2">Players Found</div>
+              <div className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-2">Matching Player Profiles</div>
               {searchResults.map((player) => (
                 <div 
-                  key={player.IdNumber} 
-                  onClick={() => navigate(`/player/${player.IdNumber}`)}
-                  className="flex items-center gap-4 p-3 rounded-2xl hover:bg-gray-50 cursor-pointer transition-all border border-transparent hover:border-gray-100"
+                  key={player.IdNumber || player.user_id} 
+                  onClick={() => navigate(`/player/${player.IdNumber || player.user_id}`)}
+                  className="flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 cursor-pointer transition-all border border-transparent hover:border-gray-100"
                 >
-                  <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden shrink-0 border border-gray-200">
-                    {player.avatar_url ? <img src={player.avatar_url} className="w-full h-full object-cover" /> : <User className="w-5 h-5 text-gray-400" />}
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden shrink-0 border border-gray-200">
+                      {player.avatar_url ? <img src={player.avatar_url} className="w-full h-full object-cover" /> : <User className="w-5 h-5 text-gray-400" />}
+                    </div>
+                    <div className="text-left min-w-0 flex-1">
+                      <div className="font-black text-gray-900 truncate">{player.full_name}</div>
+                      <div className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">{player.position || 'Athlete'} • ID: {player.IdNumber || player.user_id}</div>
+                    </div>
                   </div>
-                  <div className="text-left flex-1 min-w-0">
-                    <div className="font-black text-gray-900 truncate">{player.full_name}</div>
-                    <div className="text-[10px] text-gray-500 font-bold uppercase tracking-tight">{player.position || 'Athlete'} • ID: {player.IdNumber}</div>
-                  </div>
+
+                  <span className={`text-[9px] font-black uppercase px-2.5 py-1 rounded-full shrink-0 ${player.is_upgraded || player.role === 'recruit' ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-gray-100 text-gray-700 border border-gray-200'}`}>
+                    {player.is_upgraded || player.role === 'recruit' ? '🏆 Ranked Prospect' : '👤 Profile'}
+                  </span>
                 </div>
               ))}
             </div>

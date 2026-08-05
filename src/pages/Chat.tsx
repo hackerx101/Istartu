@@ -41,9 +41,7 @@ export default function Chat() {
               id: recipientId,
               name: recipientName,
               position: 'Athlete Prospect',
-              messages: [
-                { sender: 'them', text: `Hi ${profile?.full_name || 'Scout'}, ready to connect about recruitment opportunities!`, timestamp: 'Just now' }
-              ]
+              messages: []
             },
             ...prev
           ];
@@ -115,28 +113,6 @@ export default function Chat() {
     setNewMessage('');
     const storageKey = `fsmec_chats_${session?.user?.id || 'demo'}`;
     localStorage.setItem(storageKey, JSON.stringify(updated));
-
-    // Automated mock response
-    setTimeout(() => {
-      const replyObj = {
-        sender: 'them',
-        text: `Thanks for your message! I've logged this in my athlete recruiting dashboard.`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-      };
-      setConversations(current => {
-        const withReply = current.map(c => {
-          if (c.id === activeConversation.id) {
-            return {
-              ...c,
-              messages: [...c.messages, replyObj]
-            };
-          }
-          return c;
-        });
-        localStorage.setItem(storageKey, JSON.stringify(withReply));
-        return withReply;
-      });
-    }, 1200);
   };
 
   if (loading) return <div className="p-8 text-center text-gray-500">Loading messages...</div>;

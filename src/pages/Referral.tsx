@@ -18,16 +18,14 @@ export default function Referral() {
             setReferrer(data);
           } else {
             setReferrer({
-              full_name: 'Garexcell Athlete',
-              IdNumber: PlayerId,
-              avatar_url: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=200&auto=format&fit=crop'
+              full_name: PlayerId ? `Athlete ${PlayerId}` : 'Athlete',
+              IdNumber: PlayerId
             });
           }
         } catch (e) {
           setReferrer({
-            full_name: 'Garexcell Athlete',
-            IdNumber: PlayerId,
-            avatar_url: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=200&auto=format&fit=crop'
+            full_name: PlayerId ? `Athlete ${PlayerId}` : 'Athlete',
+            IdNumber: PlayerId
           });
         }
         setLoading(false);

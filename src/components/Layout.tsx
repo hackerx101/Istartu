@@ -105,31 +105,39 @@ export default function Layout() {
   }, []);
 
   const fetchProfile = async (userId: string) => {
+    const userEmail = session?.user?.email ? session.user.email.split('@')[0] : '';
+    const metadataName = session?.user?.user_metadata?.full_name || metadataNameFallback();
+
+    function metadataNameFallback() {
+      if (userEmail) {
+        return userEmail.charAt(0).toUpperCase() + userEmail.slice(1);
+      }
+      return 'User Account';
+    }
+
     const defaultProfile = {
       id: userId,
       user_id: userId,
-      full_name: 'Athlete Prospect',
+      full_name: metadataName,
       IdNumber: '100' + Math.floor(10000 + Math.random() * 90000).toString(),
-      is_upgraded: true,
+      is_upgraded: false,
       role: 'recruit',
       is_public: true,
-      wallet_credits: 10.00
+      wallet_credits: 0.00
     };
 
     try {
       const { data, error } = await supabase.from('profiles').select('*').eq('user_id', userId).single();
       let activeProf = defaultProfile;
-      if (data && !error) {
+      if (data && !error && data.full_name) {
         activeProf = { ...defaultProfile, ...data };
-      } else {
-        const userEmail = session?.user?.email?.split('@')[0] || 'Athlete';
-        activeProf = { ...defaultProfile, full_name: userEmail };
+      } else if (data) {
+        activeProf = { ...defaultProfile, ...data, full_name: data.full_name || metadataName };
       }
       setProfile(activeProf);
       setIstartuSharedSession(session || { user: { id: userId } }, activeProf);
     } catch (e) {
-      const userEmail = session?.user?.email?.split('@')[0] || 'Athlete';
-      const activeProf = { ...defaultProfile, full_name: userEmail };
+      const activeProf = { ...defaultProfile };
       setProfile(activeProf);
       setIstartuSharedSession(session || { user: { id: userId } }, activeProf);
     }

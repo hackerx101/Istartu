@@ -23,15 +23,8 @@ export default function Certificate() {
         }
 
         if (!profileData) {
-          profileData = {
-            id: PlayerId,
-            user_id: PlayerId,
-            full_name: 'Garexcell Elite Prospect',
-            name: 'Garexcell Elite Prospect',
-            position: 'Point Guard',
-            IdNumber: '10027189',
-            is_upgraded: true
-          };
+          setLoading(false);
+          return;
         }
         setProfile(profileData);
 

@@ -27,12 +27,9 @@ export default function AdView() {
     }
 
     if (!p) {
-      p = {
-        id: PostId,
-        user_id: 'demo-user-1',
-        content: 'Featured Sponsorship Spotlight: Elite Training & Athlete Recruitment Camp.',
-        created_at: new Date().toISOString()
-      };
+      setPost(null);
+      setLoading(false);
+      return;
     }
     setPost(p);
 
@@ -44,14 +41,7 @@ export default function AdView() {
       console.warn("Author query error in AdView:", e);
     }
 
-    if (!a) {
-      a = {
-        full_name: 'Garexcell Elite Partner',
-        position: 'Sponsor / Coach',
-        IdNumber: '10027189'
-      };
-    }
-    setAuthor(a);
+    setAuthor(a || { full_name: 'Partner' });
     setLoading(false);
   };
 

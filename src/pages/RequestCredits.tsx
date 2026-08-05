@@ -23,14 +23,14 @@ export default function RequestCredits() {
             setPlayer(data);
           } else {
             setPlayer({
-              full_name: 'Garexcell Athlete',
+              full_name: PlayerId ? `Athlete ${PlayerId}` : 'Athlete',
               IdNumber: PlayerId,
               user_id: `user-${PlayerId}`
             });
           }
         } catch (e) {
           setPlayer({
-            full_name: 'Garexcell Athlete',
+            full_name: PlayerId ? `Athlete ${PlayerId}` : 'Athlete',
             IdNumber: PlayerId,
             user_id: `user-${PlayerId}`
           });

@@ -60,6 +60,11 @@ export default function LiveStart() {
   }, [stream]);
 
   const handleStartLive = async () => {
+    if (broadcastMode === 'live' && !isUpgraded) {
+      setError("Live Broadcasting is a premium feature. Please upgrade your account to broadcast live games to collegiate scouts.");
+      return;
+    }
+
     const id = 'LIVE_' + Math.random().toString(36).substring(2, 9).toUpperCase();
     setLiveId(id);
     setIsLive(true);
@@ -263,6 +268,20 @@ export default function LiveStart() {
                 : 'Broadcast your training sessions or invite coaches for live interviews using real-time streaming.'}
             </p>
           </div>
+
+          {broadcastMode === 'live' && !isUpgraded && (
+            <div className="w-full max-w-md bg-amber-50 border border-amber-200 rounded-2xl p-4 text-center flex flex-col gap-3">
+              <div className="text-xs font-bold text-amber-900">
+                🔒 Live HD Broadcasting requires an active Subscription Plan.
+              </div>
+              <p className="text-[11px] text-amber-700">
+                Free accounts can practice stream locally. Upgrade to Pro Tier to broadcast live games to scouts.
+              </p>
+              <Link to="/plans/subscription" className="w-full py-2.5 bg-black text-white rounded-xl text-xs font-bold hover:bg-gray-800 transition-colors">
+                Upgrade Account Now
+              </Link>
+            </div>
+          )}
 
           <div className="flex flex-col gap-6 w-full max-w-md bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
             <div className="flex flex-col gap-3">

@@ -97,7 +97,7 @@ export default function Settings() {
         <h1 className="text-3xl font-bold text-gray-900">Account Center</h1>
         
         <div className="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm flex flex-col gap-6">
-          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-3">Personal Details</h2>
+          <h2 className="text-sm font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-3">Personal & Athlete Details</h2>
           <div className="flex flex-col gap-4 text-sm">
             <div className="flex justify-between border-b border-gray-100 pb-3 items-center">
               <span className="text-gray-500 font-medium">Player ID</span>
@@ -110,11 +110,29 @@ export default function Settings() {
             </div>
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <span className="text-gray-500 font-medium">Full Name</span>
-              <span className="font-bold text-gray-900">{profile?.full_name || 'Not set'}</span>
+              <span className="font-bold text-gray-900">{profile?.full_name || session?.user?.user_metadata?.full_name || (session?.user?.email ? session.user.email.split('@')[0] : 'User')}</span>
             </div>
             <div className="flex justify-between border-b border-gray-100 pb-3">
               <span className="text-gray-500 font-medium">Email Address</span>
-              <span className="font-bold text-gray-900">{session?.user?.email}</span>
+              <span className="font-bold text-gray-900">{session?.user?.email || 'Authenticated User'}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-100 pb-3">
+              <span className="text-gray-500 font-medium">Account Role</span>
+              <span className="font-bold text-gray-900 capitalize">{profile?.role || 'Athlete'}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-100 pb-3">
+              <span className="text-gray-500 font-medium">Sport & Position</span>
+              <span className="font-bold text-gray-900">{profile?.sport ? `${profile.sport}${profile?.position ? ` • ${profile.position}` : ''}` : 'Not set'}</span>
+            </div>
+            <div className="flex justify-between border-b border-gray-100 pb-3">
+              <span className="text-gray-500 font-medium">Membership Status</span>
+              <span className={`font-bold px-2.5 py-0.5 rounded-full text-xs uppercase ${profile?.is_upgraded || subscription?.is_upgraded ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-700'}`}>
+                {subscription?.plan_name || (profile?.is_upgraded ? 'Pro Tier' : 'Free Tier')}
+              </span>
+            </div>
+            <div className="flex justify-between border-b border-gray-100 pb-3">
+              <span className="text-gray-500 font-medium">Wallet Balance</span>
+              <span className="font-bold text-gray-900">${(profile?.wallet_credits || 0).toFixed(2)}</span>
             </div>
           </div>
 

@@ -23,12 +23,8 @@ export default function PostView() {
         }
 
         if (!postData) {
-          postData = {
-            id: PostId,
-            user_id: 'demo-user-1',
-            content: 'Official player highlight update and scouting metrics reel.',
-            created_at: new Date().toISOString()
-          };
+          setLoading(false);
+          return;
         }
         setPost(postData);
 
@@ -40,14 +36,7 @@ export default function PostView() {
           console.warn("Author profile query error:", e);
         }
 
-        if (!authorData) {
-          authorData = {
-            full_name: 'Garexcell Elite Prospect',
-            position: 'Point Guard',
-            IdNumber: '10027189'
-          };
-        }
-        setAuthor(authorData);
+        setAuthor(authorData || { full_name: 'Athlete' });
       }
       setLoading(false);
     };
@@ -73,7 +62,7 @@ export default function PostView() {
             )}
           </div>
           <div>
-            <h3 className="font-bold text-gray-900 text-lg">{author?.name || 'Unknown User'}</h3>
+            <h3 className="font-bold text-gray-900 text-lg">{author?.full_name || author?.name || 'Athlete'}</h3>
             <p className="text-sm text-gray-500">{new Date(post.created_at).toLocaleString()}</p>
           </div>
         </div>

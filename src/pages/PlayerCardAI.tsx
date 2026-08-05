@@ -26,10 +26,11 @@ export default function PlayerCardAI() {
 
   // Form State Pre-filled from profile
   const [name, setName] = useState('');
-  const [playerClass, setPlayerClass] = useState('Class of 2026');
-  const [position, setPosition] = useState('Point Guard');
-  const [teamName, setTeamName] = useState('Garexcell Eagles');
-  const [rankingScore, setRankingScore] = useState('95 OVR');
+  const [playerClass, setPlayerClass] = useState('Prospect');
+  const [position, setPosition] = useState('Athlete');
+  const [teamName, setTeamName] = useState('Independent');
+  const [rankingScore, setRankingScore] = useState('Verified');
+  const [bio, setBio] = useState('');
   const [theme, setTheme] = useState(BACKGROUND_THEMES[0]);
   const [copied, setCopied] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -45,7 +46,11 @@ export default function PlayerCardAI() {
       fetched = JSON.parse(localStorage.getItem('demo_profile') || '{}');
     } else {
       try {
-        const { data } = await supabase.from('profiles').select('*').eq('IdNumber', PlayerId).single();
+        const { data } = await supabase
+          .from('profiles')
+          .select('*')
+          .or(`IdNumber.eq.${PlayerId},user_id.eq.${PlayerId},full_name.eq.${PlayerId}`)
+          .maybeSingle();
         fetched = data;
       } catch (e) {
         console.warn("Profiles fetch error:", e);
@@ -53,16 +58,19 @@ export default function PlayerCardAI() {
     }
     if (!fetched) {
       fetched = {
-        IdNumber: PlayerId || '10027189',
-        full_name: 'Pro Athlete',
-        name: 'Pro Athlete',
-        position: 'Point Guard',
-        is_upgraded: true
+        IdNumber: PlayerId || '',
+        full_name: PlayerId ? `Athlete ${PlayerId}` : 'Athlete',
+        position: 'Athlete',
+        is_upgraded: false
       };
     }
     setProfile(fetched);
-    setName(fetched.full_name || fetched.name || 'Athlete');
+    setName(fetched.full_name || fetched.name || (PlayerId ? `Athlete ${PlayerId}` : 'Athlete'));
     if (fetched.position) setPosition(fetched.position);
+    if (fetched.team_id) setTeamName(fetched.team_id);
+    else if (fetched.sport) setTeamName(fetched.sport);
+    else setTeamName('Independent Prospect');
+    if (fetched.bio) setBio(fetched.bio);
   };
 
   const simulateAI = () => {
@@ -100,6 +108,30 @@ export default function PlayerCardAI() {
       await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleSaveProfileData = async () => {
+    if (!profile?.user_id) return;
+    try {
+      if (localStorage.getItem('demo_mode') === 'true') {
+        const p = JSON.parse(localStorage.getItem('demo_profile') || '{}');
+        p.full_name = name;
+        p.position = position;
+        p.bio = bio;
+        p.team_id = teamName;
+        localStorage.setItem('demo_profile', JSON.stringify(p));
+      } else {
+        await supabase.from('profiles').update({
+          full_name: name,
+          position: position,
+          bio: bio,
+          team_id: teamName
+        }).eq('user_id', profile.user_id);
+      }
+      alert('Card changes saved to athlete profile!');
+    } catch (e) {
+      console.warn("Failed saving profile:", e);
     }
   };
 
@@ -200,7 +232,7 @@ export default function PlayerCardAI() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Team Name</label>
+                    <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Team / Club</label>
                     <input 
                       type="text" 
                       value={teamName} 
@@ -209,7 +241,7 @@ export default function PlayerCardAI() {
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Ranking Score</label>
+                    <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Badge Status</label>
                     <input 
                       type="text" 
                       value={rankingScore} 
@@ -217,6 +249,17 @@ export default function PlayerCardAI() {
                       className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-black"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 uppercase mb-1">Bio / Overview</label>
+                  <textarea 
+                    rows={2}
+                    value={bio} 
+                    onChange={e => setBio(e.target.value)} 
+                    placeholder="Enter athlete bio or scouting notes..."
+                    className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:border-black text-xs resize-none"
+                  />
                 </div>
 
                 <div>
@@ -239,21 +282,29 @@ export default function PlayerCardAI() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3 pt-2">
+              <div className="flex flex-col gap-2 pt-2">
                 <button 
-                  onClick={handleSaveImage}
-                  disabled={saving}
-                  className="flex-1 bg-black text-white py-3.5 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 shadow-sm text-sm"
+                  onClick={handleSaveProfileData}
+                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-sm text-sm"
                 >
-                  <Download className="w-4 h-4" /> {saving ? 'Generating PNG...' : 'Save Card'}
+                  <Check className="w-4 h-4" /> Save Details to Profile
                 </button>
-                <button 
-                  onClick={handleShare}
-                  className="flex-1 bg-gray-100 text-gray-900 py-3.5 rounded-xl font-bold hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm"
-                >
-                  {copied ? <Check className="w-4 h-4 text-green-600" /> : <Share2 className="w-4 h-4" />}
-                  {copied ? 'Copied Link!' : 'Share'}
-                </button>
+                <div className="flex gap-3">
+                  <button 
+                    onClick={handleSaveImage}
+                    disabled={saving}
+                    className="flex-1 bg-black text-white py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors flex items-center justify-center gap-2 shadow-sm text-sm"
+                  >
+                    <Download className="w-4 h-4" /> {saving ? 'Exporting...' : 'Save PNG'}
+                  </button>
+                  <button 
+                    onClick={handleShare}
+                    className="flex-1 bg-gray-100 text-gray-900 py-3 rounded-xl font-bold hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 text-sm"
+                  >
+                    {copied ? <Check className="w-4 h-4 text-green-600" /> : <Share2 className="w-4 h-4" />}
+                    {copied ? 'Copied!' : 'Share'}
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -296,36 +347,16 @@ export default function PlayerCardAI() {
                   </div>
                 </div>
 
-                {/* Attributes Radar Grid */}
-                <div className="grid grid-cols-4 gap-2 text-center z-10">
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-2.5 backdrop-blur-sm">
-                    <div className="text-[10px] text-gray-400 font-mono uppercase tracking-wider">SPD</div>
-                    <div className="font-black text-xl text-white">94</div>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-2.5 backdrop-blur-sm">
-                    <div className="text-[10px] text-gray-400 font-mono uppercase tracking-wider">ACC</div>
-                    <div className="font-black text-xl text-white">91</div>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-2.5 backdrop-blur-sm">
-                    <div className="text-[10px] text-gray-400 font-mono uppercase tracking-wider">IQ</div>
-                    <div className="font-black text-xl text-white">96</div>
-                  </div>
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-2.5 backdrop-blur-sm">
-                    <div className="text-[10px] text-gray-400 font-mono uppercase tracking-wider">POT</div>
-                    <div className="font-black text-xl text-white">98</div>
-                  </div>
-                </div>
-
-                {/* AI Summary Section */}
+                {/* AI Scouting Summary */}
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-5 backdrop-blur-sm z-10">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-gray-300 uppercase tracking-widest flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-purple-400" /> AI Scouting Summary
+                      <Sparkles className="w-3.5 h-3.5 text-purple-400" /> Athlete Scouting Overview
                     </span>
-                    <span className="text-[10px] text-gray-500 font-mono">VERIFIED</span>
+                    <span className="text-[10px] text-gray-400 font-mono">ATHLETE PROFILE</span>
                   </div>
-                  <p className="text-gray-300 leading-relaxed text-xs">
-                    Demonstrates elite court perception, high athletic agility, and exceptional spatial decision-making. High-volume competitor with high recruiting potential in national collegiate leagues.
+                  <p className="text-gray-200 leading-relaxed text-xs font-medium">
+                    {bio || profile?.bio || `${name} is an active prospect competing in ${teamName}. Verified athlete profile on FSMEC Sports Network.`}
                   </p>
                 </div>
 
