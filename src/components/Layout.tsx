@@ -221,6 +221,7 @@ export default function Layout() {
                 {showDropdown && (
                   <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-lg py-2 z-50">
                     <Link to="/tv" onClick={() => setShowDropdown(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-medium">📺 TV & Streams</Link>
+                    <Link to="/partners" onClick={() => setShowDropdown(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 font-medium">🤝 Official Partners</Link>
                     <Link to="/settings" onClick={() => setShowDropdown(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Manage Account</Link>
                     <button onClick={handleLogout} className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">Log Out</button>
                   </div>
@@ -240,6 +241,7 @@ export default function Layout() {
                   <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-2xl shadow-lg py-2 z-50">
                     <Link to="/tv" onClick={() => setShowMobileMenu(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50">📺 TV & Streams</Link>
                     <Link to="/plans/subscription" onClick={() => setShowMobileMenu(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50">Plans</Link>
+                    <Link to="/partners" onClick={() => setShowMobileMenu(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 border-b border-gray-50">Partners</Link>
                     <Link to="/partner/request" onClick={() => setShowMobileMenu(false)} className="block px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50">Request to be a Partner</Link>
                   </div>
                 )}
@@ -261,6 +263,7 @@ export default function Layout() {
             <div className="flex gap-4">
               <Link to="/events" className="hover:text-black">Events</Link>
               <Link to="/rankings" className="hover:text-black">Rankings</Link>
+              <Link to="/partners" className="hover:text-black">Partners</Link>
               <Link to="/tos" className="hover:text-black">Terms</Link>
               <Link to="/privacy" className="hover:text-black">Privacy</Link>
             </div>

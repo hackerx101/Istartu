@@ -39,6 +39,7 @@ import AdView from './pages/AdView';
 import TOS from './pages/TOS';
 import Privacy from './pages/Privacy';
 import PartnerRequest from './pages/PartnerRequest';
+import Partners from './pages/Partners';
 import RedirectPage from './pages/RedirectPage';
 import PlayerCardAI from './pages/PlayerCardAI';
 import TestDemo from './pages/TestDemo';
@@ -58,6 +59,7 @@ export default function App() {
           <Route path="tos" element={<TOS />} />
           <Route path="privacy" element={<Privacy />} />
           <Route path="partner/request" element={<PartnerRequest />} />
+          <Route path="partners" element={<Partners />} />
           <Route path="i/redirect" element={<RedirectPage />} />
           <Route path="auth/forgot-password" element={<ForgotPassword />} />
           <Route path="login/auth/client_id" element={<GarexcellLogin />} />

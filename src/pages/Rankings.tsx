@@ -6,19 +6,56 @@ import { Link } from 'react-router-dom';
 
 const CLASSES = ["All Classes", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035"];
 const SPORTS = ["All Sports", "Basketball", "Soccer"];
-const STATES = ["All States", "Michigan", "California", "Texas", "Florida", "New York", "Illinois", "Pennsylvania", "Ohio", "Georgia", "North Carolina"];
+const LOCATIONS = [
+  "All Locations", 
+  "Canada", 
+  "United Kingdom", 
+  "Europe", 
+  "Michigan", 
+  "California", 
+  "Texas", 
+  "Florida", 
+  "New York", 
+  "Illinois", 
+  "Pennsylvania", 
+  "Ohio", 
+  "Georgia", 
+  "North Carolina"
+];
+
+const EUROPEAN_COUNTRIES = [
+  "All European Countries",
+  "United Kingdom",
+  "France",
+  "Germany",
+  "Spain",
+  "Italy",
+  "Netherlands",
+  "Ireland",
+  "Sweden",
+  "Poland",
+  "Portugal",
+  "Belgium",
+  "Switzerland",
+  "Austria",
+  "Norway",
+  "Denmark",
+  "Finland",
+  "Greece"
+];
 
 export default function Rankings() {
   const [selectedClass, setSelectedClass] = useState("All Classes");
   const [selectedSport, setSelectedSport] = useState("All Sports");
-  const [selectedState, setSelectedState] = useState("All States");
+  const [selectedState, setSelectedState] = useState("All Locations");
+  const [selectedEuropeanCountry, setSelectedEuropeanCountry] = useState("All European Countries");
   const [players, setPlayers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPlayers();
-  }, [selectedClass, selectedSport, selectedState]);
+  }, [selectedClass, selectedSport, selectedState, selectedEuropeanCountry]);
 
   const fetchPlayers = async () => {
     setLoading(true);
@@ -47,13 +84,32 @@ export default function Rankings() {
 
     const combined = [demoSeedPlayer, ...dbPlayers];
 
-    // Filter by state, sport, and class
+    // Filter by location/country, sport, and class
     let filtered = combined.filter(p => {
       const pState = p.state || p.location || (p.full_name === 'demo' ? 'Michigan' : '');
       const pClass = p.class || p.graduation_year || (p.full_name === 'demo' ? '2027' : '');
       const pSport = p.sport || (p.full_name === 'demo' ? 'Basketball & Soccer' : 'Basketball');
 
-      const matchesState = selectedState === "All States" || (pState && pState.toLowerCase().includes(selectedState.toLowerCase()));
+      // Location / State / Region matching logic
+      let matchesState = false;
+      if (selectedState === "All Locations" || selectedState === "All States") {
+        matchesState = true;
+      } else if (selectedState === "Canada") {
+        matchesState = pState.toLowerCase().includes("canada");
+      } else if (selectedState === "United Kingdom") {
+        matchesState = pState.toLowerCase().includes("united kingdom") || pState.toLowerCase().includes("uk") || pState.toLowerCase().includes("london") || pState.toLowerCase().includes("britain");
+      } else if (selectedState === "Europe") {
+        if (selectedEuropeanCountry === "All European Countries") {
+          const isEurope = pState.toLowerCase().includes("europe") || 
+            EUROPEAN_COUNTRIES.some(c => c !== "All European Countries" && pState.toLowerCase().includes(c.toLowerCase()));
+          matchesState = isEurope;
+        } else {
+          matchesState = pState.toLowerCase().includes(selectedEuropeanCountry.toLowerCase());
+        }
+      } else {
+        matchesState = pState.toLowerCase().includes(selectedState.toLowerCase());
+      }
+
       const matchesClass = selectedClass === "All Classes" || (pClass && pClass.toString() === selectedClass);
       const matchesSport = selectedSport === "All Sports" || (pSport && pSport.toLowerCase().includes(selectedSport.toLowerCase()));
 
@@ -122,12 +178,29 @@ export default function Rankings() {
           <select 
             className="flex-1 md:flex-none px-4 py-2.5 rounded-full bg-gray-50 text-[10px] font-black uppercase tracking-tight text-gray-800 outline-none focus:bg-white focus:ring-2 focus:ring-black/5 cursor-pointer appearance-none text-center"
             value={selectedState}
-            onChange={(e) => setSelectedState(e.target.value)}
+            onChange={(e) => {
+              setSelectedState(e.target.value);
+              if (e.target.value !== "Europe") {
+                setSelectedEuropeanCountry("All European Countries");
+              }
+            }}
           >
-            {STATES.map(s => (
-              <option key={s} value={s}>{s}</option>
+            {LOCATIONS.map(loc => (
+              <option key={loc} value={loc}>{loc}</option>
             ))}
           </select>
+
+          {selectedState === "Europe" && (
+            <select 
+              className="flex-1 md:flex-none px-4 py-2.5 rounded-full bg-blue-50 border border-blue-200 text-[10px] font-black uppercase tracking-tight text-blue-900 outline-none focus:bg-white focus:ring-2 focus:ring-blue-500/20 cursor-pointer appearance-none text-center shadow-sm"
+              value={selectedEuropeanCountry}
+              onChange={(e) => setSelectedEuropeanCountry(e.target.value)}
+            >
+              {EUROPEAN_COUNTRIES.map(c => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
 
