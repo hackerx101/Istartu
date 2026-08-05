@@ -1,0 +1,6 @@
+{
+  "name": "iStartU",
+  "description": "Professional sports recruitment, live scouting, and streaming platform.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
