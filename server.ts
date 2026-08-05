@@ -3,9 +3,14 @@ import path from "path";
 import cors from "cors";
 import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
+import { createClient } from "@supabase/supabase-js";
 import dotenv from "dotenv";
 
 dotenv.config();
+
+const supabaseUrl = 'https://kqhjubuhuwofhgdvosnk.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtxaGp1YnVodXdvZmhnZHZvc25rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2OTEyMTcsImV4cCI6MjA5OTI2NzIxN30.ML14yDvi6aPSprv21T_cmzcIyaUo6tfHTZ8Cr1C0BbY';
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const ai = new GoogleGenAI({ 
   apiKey: process.env.GEMINI_API_KEY || "dummy_key",
@@ -28,6 +33,60 @@ async function startServer() {
   // API routes
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
+  });
+
+  // Dynamic sitemap generator
+  app.get("/sitemap.xml", async (req, res) => {
+    try {
+      const baseUrl = req.protocol + '://' + req.get('host');
+      
+      // Fetch public profiles to include in sitemap
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('IdNumber, user_id')
+        .eq('is_public', true)
+        .limit(500);
+
+      let playerUrls = "";
+      if (profiles) {
+        playerUrls = profiles.map(p => `
+  <url>
+    <loc>${baseUrl}/player/${p.IdNumber || p.user_id}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>`).join('');
+      }
+
+      const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${baseUrl}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/plans</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/rankings</loc>
+    <changefreq>always</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/events</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>${playerUrls}
+</urlset>`;
+
+      res.header('Content-Type', 'application/xml');
+      res.send(sitemap);
+    } catch (err) {
+      console.error("Sitemap error:", err);
+      res.status(500).end();
+    }
   });
 
   app.post("/api/chat", async (req, res) => {
