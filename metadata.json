@@ -1,6 +1,6 @@
 {
-  "name": "iStartU",
-  "description": "Professional sports recruitment, live scouting, and streaming platform.",
+  "name": "FSMEC Sports Network",
+  "description": "Professional athletic scouting, player card AI showcase, and recruitment platform.",
   "requestFramePermissions": ["camera", "microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

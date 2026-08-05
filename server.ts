@@ -81,8 +81,8 @@ async function startServer() {
   </url>${playerUrls}
 </urlset>`;
 
-      res.header('Content-Type', 'application/xml');
-      res.send(sitemap);
+      res.header('Content-Type', 'text/xml');
+      res.send(sitemap.trim());
     } catch (err) {
       console.error("Sitemap error:", err);
       res.status(500).end();
