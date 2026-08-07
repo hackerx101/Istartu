@@ -29,13 +29,13 @@ export default function TVRedirect() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Redirecting to iStartU TV</h1>
           <p className="text-sm text-gray-500 mt-2 leading-relaxed">
-            Connecting your account session across <span className="font-semibold text-black">tv.istartu.com</span>...
+            Opening <span className="font-semibold text-black">tv.istartu.com</span>...
           </p>
         </div>
 
-        <div className="flex items-center gap-3 text-blue-600 bg-blue-50 px-4 py-2.5 rounded-full text-xs font-bold">
+        <div className="flex items-center gap-3 text-gray-400 text-xs font-medium">
           <Loader2 className="w-4 h-4 animate-spin" />
-          <span>Transferring istartu_token & session</span>
+          <span>Redirecting...</span>
         </div>
 
         <a 

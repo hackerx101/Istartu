@@ -1,9 +1,4 @@
 User-agent: *
 Allow: /
-Allow: /plans
-Allow: /partners
-Allow: /player/:PlayerId
-Dissallow: /auth
 
-
-Sitemap: https://istartu.com/sitemap.xml
+Sitemap: /sitemap.xml

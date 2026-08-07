@@ -195,7 +195,7 @@ export default function Layout() {
     <div className="min-h-screen bg-white text-black font-sans flex flex-col">
       <Helmet>
         <title>FSMEC - Connect Athletes, Coaches & Scouts</title>
-        <meta name="description" content="FSMEC is the premier platform that connects athletes, coaches, and scouts globally. Get recognized for recruitment and career development opportunities." />
+        <meta name="description" content="FSMEC (International Sports Transformation and Athletic ranking training unit) is the premier platform that connects athletes, coaches, and scouts globally. Get recognized for recruitment and career development opportunities." />
       </Helmet>
 
       {session && isSubscriptionExpired() && (
@@ -271,6 +271,7 @@ export default function Layout() {
             <div className="flex gap-4">
               <Link to="/events" className="hover:text-black">Events</Link>
               <Link to="/rankings" className="hover:text-black">Rankings</Link>
+              <a href="https://tv.istartu.com" target="_blank" rel="noreferrer" className="hover:text-black">TV</a>
               <Link to="/partners" className="hover:text-black">Partners</Link>
               <Link to="/tos" className="hover:text-black">Terms</Link>
               <Link to="/privacy" className="hover:text-black">Privacy</Link>
@@ -278,11 +279,9 @@ export default function Layout() {
           </div>
           
           <div className="flex flex-col items-center gap-1">
-            {window.location.hostname.includes('istartu.com') && (
-              <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center px-4">
-                International Sports Transformation and Athletic Ranking training unit
-              </span>
-            )}
+            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center px-4">
+              International Sports Transformation and Athletic Ranking training unit (FSMEC)
+            </span>
             <div className="text-gray-900 font-black tracking-tight text-sm">
               by Garexcell
             </div>

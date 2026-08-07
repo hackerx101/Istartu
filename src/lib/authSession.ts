@@ -103,39 +103,10 @@ export function getIstartuSharedSession() {
 }
 
 /**
- * Construct the target tv.istartu.com URL with attached session tokens
+ * Construct the target tv.istartu.com URL
  */
 export function getTVRedirectURL() {
-  const existing = getIstartuSharedSession();
-  let token = existing?.token || localStorage.getItem('istartu_token');
-  let sharedSessionStr = existing?.sharedSession 
-    ? JSON.stringify(existing.sharedSession) 
-    : localStorage.getItem('istartu_shared_session');
-
-  // Fallback demo tokens if no session logged in yet
-  if (!token || !sharedSessionStr) {
-    token = 'istartu_tok_demo_10027189';
-    const demoData = {
-      user: { id: 'demo-user-1', email: 'test@demo.com' },
-      profile: {
-        id: 'demo-user-1',
-        full_name: 'Garexcell Elite Prospect',
-        IdNumber: '10027189',
-        is_upgraded: true,
-        role: 'recruit'
-      },
-      token,
-      updated_at: new Date().toISOString()
-    };
-    sharedSessionStr = JSON.stringify(demoData);
-  }
-
-  const tvBaseUrl = 'https://tv.istartu.com';
-  const urlParams = new URLSearchParams();
-  urlParams.set('istartu_token', token);
-  urlParams.set('istartu_shared_session', sharedSessionStr);
-
-  return `${tvBaseUrl}/?${urlParams.toString()}`;
+  return 'https://tv.istartu.com';
 }
 
 /**

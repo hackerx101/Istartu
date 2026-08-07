@@ -45,43 +45,45 @@ async function startServer() {
         .from('profiles')
         .select('IdNumber, user_id')
         .eq('is_public', true)
-        .limit(500);
+        .limit(1000);
 
-      let playerUrls = "";
-      if (profiles) {
-        playerUrls = profiles.map(p => `
+      const playerUrls = profiles?.map(p => `
   <url>
     <loc>${baseUrl}/player/${p.IdNumber || p.user_id}</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
-  </url>`).join('');
-      }
+  </url>`).join('') || "";
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${baseUrl}/</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>${baseUrl}/plans</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>${baseUrl}/rankings</loc>
-    <changefreq>always</changefreq>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>${baseUrl}/events</loc>
+    <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>${playerUrls}
 </urlset>`;
 
-      res.header('Content-Type', 'text/xml');
+      res.header('Content-Type', 'text/xml; charset=UTF-8');
       res.send(sitemap.trim());
     } catch (err) {
       console.error("Sitemap error:", err);

@@ -130,10 +130,10 @@ export default function Rankings() {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 flex flex-col gap-8 sm:gap-10">
       <Helmet>
-        <title>National Recruit Rankings | iStartU Scouting</title>
-        <meta name="description" content="Explore official athletic recruit rankings for basketball and soccer prospects with verified stats and player profiles." />
-        <meta property="og:title" content="National & State Recruit Rankings | iStartU Scouting" />
-        <meta property="og:description" content="Official recruitment rankings for Basketball & Soccer prospects, complete with verified stats and player profiles." />
+        <title>NFSMEC Rankings | FSMEC Sports Network</title>
+        <meta name="description" content="Explore official NFSMEC athletic recruit rankings for basketball and soccer prospects with verified stats and player profiles." />
+        <meta property="og:title" content="NFSMEC Recruit Rankings | FSMEC Sports Network" />
+        <meta property="og:description" content="Official NFSMEC recruitment rankings for Basketball & Soccer prospects, complete with verified stats and player profiles." />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
       </Helmet>
