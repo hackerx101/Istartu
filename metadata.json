@@ -1,5 +1,5 @@
 {
-  "name": "FSMEC Sports Network",
+  "name": "FSMEC Sports Network-ISTARTU",
   "description": "Professional athletic scouting, player card AI showcase, and recruitment platform.",
   "requestFramePermissions": ["camera", "microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
