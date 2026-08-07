@@ -35,15 +35,27 @@ interface SeedPlayer {
 
 const SEED_PLAYERS: SeedPlayer[] = [
   {
-    id: "demarcus-mcpherson",
-    name: "Demarcus Mcpherson",
-    biography: "Dominant guard prospect showing advanced footwork, exceptional shooting mechanics, and elite defensive hustle in the London under-13 circuit. Highly scouted for transition offense and playmaking ability.",
-    region: "London, United Kingdom (u13)",
-    classYear: "2031",
-    teamName: "London Elite Academy",
+    id: "kendiel-tewelde",
+    name: "Kendiel Tewelde",
+    biography: "Dominant soccer prospect showing advanced footwork, exceptional tacle mechanics and skills, and elite defensive  in the game .",
+    region: "Las Vegas,Nevada (u16)",
+    classYear: "2029",
+    teamName: "Southwest career and technical academy",
     socials: {
-      instagram: "demarcus_u13",
-      twitter: "demarcus_mc"
+      instagram: "kenfliess",
+      twitter: "usernotfound.net"
+    }
+  },
+  {
+    id: "dakota-jackson",
+    name: "Dakota Jackson",
+    biography: "Dallas texas guard prospect showing advanced offense and playmaking ability.",
+    region: "Dallas,Texas (u15)",
+    classYear: "2030",
+    teamName: "Dallas Mustang",
+    socials: {
+      instagram: "dakotajackson__",
+      twitter: "dakotajackson__"
     }
   },
   {
@@ -54,8 +66,8 @@ const SEED_PLAYERS: SeedPlayer[] = [
     classYear: "2029",
     teamName: "Atlanta Celtics AAU",
     socials: {
-      instagram: "kahlil_henry",
-      twitter: "kahlil_h"
+      instagram: "nouserfound.net",
+      twitter: "nouserfound.net"
     }
   }
 ];
@@ -170,7 +182,7 @@ export default function Showcase() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Helmet>
-        <title>Athlete Showcase | FSMEC Sports Network</title>
+        <title>Athlete Showcase | ISTARTU(FSMEC)Sports Network</title>
         <meta name="description" content="Discover rising stars, elite prospects, and certified training talent on the FSMEC Showcase. Browse player credentials, region, team affiliations, and highlight reels." />
         
         {/* Open Graph / Webgraph SEO Meta Tags */}
@@ -183,7 +195,7 @@ export default function Showcase() {
         
         {/* Twitter Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Athlete Showcase | FSMEC Sports Network" />
+        <meta name="twitter:title" content="Athlete Showcase | FSMEC Sports Network Showcase" />
         <meta name="twitter:description" content="Discover rising stars, elite prospects, and certified training talent on the FSMEC Showcase. Browse player credentials, region, team affiliations, and highlight reels." />
         <meta name="twitter:image" content="/icon.svg" />
       </Helmet>
@@ -220,7 +232,7 @@ export default function Showcase() {
             <div className="lg:col-span-7 bg-black rounded-2xl aspect-video relative overflow-hidden border border-gray-800 shadow-2xl">
               <iframe 
                 src="https://www.youtube.com/embed/AlzaBwvPcqM?rel=0&autoplay=0" 
-                title="Kahlil Henry Highlight Reel" 
+                title="Dakota Jackson Highlight Reel" 
                 className="absolute inset-0 w-full h-full rounded-2xl border-0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                 allowFullScreen
