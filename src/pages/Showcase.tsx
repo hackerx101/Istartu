@@ -216,27 +216,15 @@ export default function Showcase() {
           </div>
 
           <div className="grid lg:grid-cols-12 gap-6 items-center">
-            {/* Visual Aspect Placeholder of the Video */}
-            <div className="lg:col-span-7 bg-gray-900 rounded-2xl aspect-video relative flex flex-col items-center justify-center overflow-hidden border border-gray-800 shadow-inner group">
-              {/* Fake Video Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-black/20" />
-              
-              <div className="absolute top-4 left-4 z-10 bg-black/60 backdrop-blur-md text-white px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-white/10">
-                <User className="w-3.5 h-3.5 text-blue-400" /> Kahlil henry
-              </div>
-
-              {/* Fake Play Button Triggering Inactive Message */}
-              <button 
-                onClick={() => alert("This video link is currently private and restricted for registered collegiate scouts.")} 
-                className="relative z-10 w-16 h-16 rounded-full bg-red-600 text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-xl hover:bg-red-700"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 fill-current translate-x-0.5"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17z"/><path d="m10 15 5-3-5-3z"/></svg>
-              </button>
-
-              <div className="absolute bottom-4 left-4 right-4 z-10 text-left">
-                <p className="text-white font-bold text-sm tracking-tight">AAU Spring Showcase - Dallas, TX</p>
-                <p className="text-gray-300 text-xs mt-0.5">Scout Verified • 4K High Definition Resolution</p>
-              </div>
+            {/* YouTube Video Player Embed */}
+            <div className="lg:col-span-7 bg-black rounded-2xl aspect-video relative overflow-hidden border border-gray-800 shadow-2xl">
+              <iframe 
+                src="https://www.youtube.com/embed/AlzaBwvPcqM?rel=0&autoplay=0" 
+                title="Kahlil Henry Highlight Reel" 
+                className="absolute inset-0 w-full h-full rounded-2xl border-0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowFullScreen
+              ></iframe>
             </div>
 
             {/* Video Meta Info */}
@@ -264,14 +252,12 @@ export default function Showcase() {
               </div>
 
               <a 
-                href="https://www.youtube.com/watch?v=dQw4w9WgXcQ_scout_private" 
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert("This YouTube video is restricted to verified FSMEC scouts. Please log in to your recruiter portal.");
-                }}
-                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-gray-900 hover:bg-black text-white text-xs font-black tracking-wide transition-all shadow-sm cursor-pointer"
+                href="https://youtube.com/watch?v=AlzaBwvPcqMOS" 
+                target="_blank"
+                rel="noreferrer"
+                className="w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white text-xs font-black tracking-wide transition-all shadow-sm cursor-pointer"
               >
-                <ExternalLink className="w-4 h-4" /> Access Full High-Resolution Tape
+                <ExternalLink className="w-4 h-4" /> Watch directly on YouTube
               </a>
             </div>
           </div>
