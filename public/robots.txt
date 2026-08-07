@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Allow: /plans
+Allow: /partners
+Allow: /player/:PlayerId
+Dissallow: /auth
 
-Sitemap: https://fsmec.sports/sitemap.xml
+
+Sitemap: https://istartu.com/sitemap.xml
