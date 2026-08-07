@@ -1,4 +1,10 @@
 User-agent: *
 Allow: /
+Allow: /plans
+Allow: /rankings
+Allow: /partners
+Allow: /tv
+Allow: /recruits
+Disallow: /auth
 
 Sitemap: /sitemap.xml
