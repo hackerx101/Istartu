@@ -263,35 +263,77 @@ export default function Layout() {
         <Outlet context={{ session, profile, subscription }} />
       </main>
 
-      {/* Footer (shown on landing page or bottom of long pages) */}
-      <footer className="bg-white border-t border-gray-100 py-12 px-6 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-gray-500 text-xs flex flex-col md:flex-row gap-4 items-center">
-            <span>&copy; {new Date().getFullYear()} FSMEC. All rights reserved.</span>
-            <div className="flex gap-4">
-              <Link to="/events" className="hover:text-black">Events</Link>
-              <Link to="/rankings" className="hover:text-black">Rankings</Link>
-              <a href="https://tv.istartu.com" target="_blank" rel="noreferrer" className="hover:text-black">TV</a>
-              <Link to="/partners" className="hover:text-black">Partners</Link>
-              <Link to="/tos" className="hover:text-black">Terms</Link>
-              <Link to="/privacy" className="hover:text-black">Privacy</Link>
+      {/* Beautifully Redesigned Modern Footer */}
+      <footer className="bg-white border-t border-gray-100 pt-16 pb-12 px-6 mt-auto">
+        <div className="max-w-7xl mx-auto space-y-12">
+          {/* Top Columns Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+            {/* Left Column: Brand Statement */}
+            <div className="md:col-span-5 space-y-4">
+              <div className="flex items-center gap-2.5">
+                <span className="font-black text-xl tracking-tighter bg-black text-white px-3 py-1 rounded-xl">FSMEC</span>
+                <span className="text-[10px] font-black uppercase tracking-widest text-gray-400">Sports Network</span>
+              </div>
+              <p className="text-gray-500 text-xs leading-relaxed max-w-sm">
+                International Sports Transformation and Athletic Ranking training unit (FSMEC). Connecting prospective high school and youth basketball &amp; soccer recruits with worldwide scouts.
+              </p>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-gray-50 text-gray-500 border border-gray-200">
+                A Subsidiary of Garexcell Sports
+              </div>
             </div>
-          </div>
-          
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest text-center px-4">
-              International Sports Transformation and Athletic Ranking training unit (FSMEC)
-            </span>
-            <div className="text-gray-900 font-black tracking-tight text-sm">
-              by Garexcell
+
+            {/* Middle Column: Platform Links */}
+            <div className="md:col-span-4 space-y-4">
+              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest">Platform</h3>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2.5 text-xs">
+                <Link to="/events" className="text-gray-500 hover:text-black font-semibold transition-colors">Events</Link>
+                <Link to="/rankings" className="text-gray-500 hover:text-black font-semibold transition-colors">Rankings</Link>
+                <Link to="/showcase" className="text-gray-500 hover:text-black font-semibold transition-colors">Showcase</Link>
+                <Link to="/plans/subscription" className="text-gray-500 hover:text-black font-semibold transition-colors">Plans</Link>
+                <Link to="/partners" className="text-gray-500 hover:text-black font-semibold transition-colors">Partners</Link>
+                <Link to="/tips" className="text-gray-500 hover:text-black font-semibold transition-colors">Recruiting Tips</Link>
+                <a href="https://tv.istartu.com" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-black font-semibold transition-colors">FSMEC TV</a>
+              </div>
+            </div>
+
+            {/* Right Column: Information & Assistance */}
+            <div className="md:col-span-3 space-y-4">
+              <h3 className="text-xs font-black text-gray-900 uppercase tracking-widest">Contact & Policy</h3>
+              <div className="flex flex-col gap-2.5 text-xs text-gray-500">
+                <Link to="/contact" className="hover:text-black font-semibold transition-colors">Contact Support</Link>
+                <Link to="/tos" className="hover:text-black font-semibold transition-colors">Terms of Service</Link>
+                <Link to="/privacy" className="hover:text-black font-semibold transition-colors">Privacy Policy</Link>
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <a href="https://instagram.com/garexcell" target="_blank" rel="noreferrer" className="text-gray-500 hover:text-black transition-colors flex items-center gap-2 text-sm font-bold">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-              @garexcell
-            </a>
+          {/* Divider */}
+          <div className="border-t border-gray-100 pt-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="text-gray-400 text-[10px] font-bold uppercase tracking-wider text-center sm:text-left">
+              &copy; {new Date().getFullYear()} FSMEC Sports • by Garexcell. All rights reserved.
+            </div>
+
+            {/* Social Media Link with IG having NO text beside it */}
+            <div className="flex items-center gap-3">
+              <a 
+                href="https://instagram.com/garexcell" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-9 h-9 rounded-full bg-gray-50 hover:bg-pink-50 border border-gray-200 hover:border-pink-200 text-gray-500 hover:text-pink-600 flex items-center justify-center transition-all"
+                title="Instagram profile"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4.5 h-4.5"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+              </a>
+              <a 
+                href="https://twitter.com/garexcell" 
+                target="_blank" 
+                rel="noreferrer" 
+                className="w-9 h-9 rounded-full bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 text-gray-500 hover:text-blue-500 flex items-center justify-center transition-all"
+                title="X (Twitter) profile"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4.5 h-4.5"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+              </a>
+            </div>
           </div>
         </div>
       </footer>

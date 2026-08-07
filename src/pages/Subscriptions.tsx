@@ -229,6 +229,15 @@ export default function Subscriptions() {
         <title>Recruitment Subscription Plans & Scout Pricing - FSMEC</title>
         <meta name="description" content="Unlock AI player cards, direct recruiter messaging, HD live streaming, and verified gold badges with FSMEC subscription plans." />
         <meta property="og:title" content="FSMEC Subscription Plans & Scout Access" />
+        <meta property="og:description" content="Unlock AI player cards, direct recruiter messaging, HD live streaming, and verified gold badges with FSMEC subscription plans." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://istartu.com/plans" />
+        <meta property="og:image" content="/icon.svg" />
+        <meta property="og:site_name" content="FSMEC Sports Network" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="FSMEC Subscription Plans & Scout Access" />
+        <meta name="twitter:description" content="Unlock AI player cards, direct recruiter messaging, HD live streaming, and verified gold badges with FSMEC subscription plans." />
+        <meta name="twitter:image" content="/icon.svg" />
       </Helmet>
       <div className="text-center flex flex-col items-center gap-4">
         <h1 className="text-4xl font-bold tracking-tight">Upgrade Your Career</h1>

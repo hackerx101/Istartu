@@ -44,6 +44,10 @@ import RedirectPage from './pages/RedirectPage';
 import PlayerCardAI from './pages/PlayerCardAI';
 import TestDemo from './pages/TestDemo';
 import TVRedirect from './pages/TVRedirect';
+import Contact from './pages/Contact';
+import Showcase from './pages/Showcase';
+import CreatePlayerCard from './pages/CreatePlayerCard';
+import TipsPage from './pages/TipsPage';
 
 // iStartU Main App Routes
 export default function App() {
@@ -53,6 +57,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
           <Route index element={<LandingPage />} />
+          <Route path="contact" element={<Contact />} />
+          <Route path="showcase" element={<Showcase />} />
           <Route path="auth/login" element={<Login />} />
           <Route path="auth/signup" element={<Signup />} />
           
@@ -87,6 +93,8 @@ export default function App() {
           <Route path="certificate/view/:PlayerId" element={<Certificate />} />
           <Route path="player/:PlayerId" element={<PlayerProfile />} />
           <Route path="player/card/:PlayerId" element={<PlayerCardAI />} />
+          <Route path="create/player-card" element={<CreatePlayerCard />} />
+          <Route path="tips" element={<TipsPage />} />
           <Route path="post/:PostId" element={<PostView />} />
           
           <Route path="recruits" element={<RecruitsLanding />} />

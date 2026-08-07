@@ -19,6 +19,17 @@ export default function TVRedirect() {
     <div className="min-h-[80vh] flex flex-col items-center justify-center px-4 py-16 bg-gray-50 text-center">
       <Helmet>
         <title>iStartU TV & Live Broadcasts</title>
+        <meta name="description" content="Watch high-definition live athletic broadcasts, scouting tapes, and recruitment showcases on iStartU TV." />
+        <meta property="og:title" content="iStartU TV & Live Broadcasts" />
+        <meta property="og:description" content="Watch high-definition live athletic broadcasts, scouting tapes, and recruitment showcases on iStartU TV." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://istartu.com/tv" />
+        <meta property="og:image" content="/icon.svg" />
+        <meta property="og:site_name" content="FSMEC Sports Network" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="iStartU TV & Live Broadcasts" />
+        <meta name="twitter:description" content="Watch high-definition live athletic broadcasts, scouting tapes, and recruitment showcases on iStartU TV." />
+        <meta name="twitter:image" content="/icon.svg" />
       </Helmet>
 
       <div className="bg-white border border-gray-100 rounded-3xl p-8 max-w-md w-full shadow-xl flex flex-col items-center gap-6">

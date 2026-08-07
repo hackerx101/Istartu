@@ -1,13 +1,4 @@
 User-agent: *
 Allow: /
-Allow: /plans
-Allow: /rankings
-Allow: /partners
-Allow: /tv
-Allow: /recruits
-Allow:/contact
-Allow: /ad
-Allow: /showcase
-Disallow: /auth
 
 Sitemap: /sitemap.xml

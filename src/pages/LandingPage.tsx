@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, ChevronDown, ChevronUp, User, Trophy } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, User, Trophy, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Helmet } from 'react-helmet-async';
 import { supabase } from '../lib/supabase';
@@ -90,17 +90,23 @@ export default function LandingPage() {
       <Helmet>
         <title>FSMEC Global Athletic Scouting & Recruiting Platform</title>
         <meta name="description" content="Discover top youth & high school basketball and soccer recruits, view verified athletic player cards, watch live court streams, and connect with college scouts." />
-        <meta property="og:title" content="FSMEC Global Scouting Platform" />
-        <meta property="og:description" content="Connecting elite basketball and soccer recruits directly with professional scouts and college recruiters." />
+        <meta property="og:title" content="FSMEC Global Scouting Platform | A Subsidiary of Garexcell Sports" />
+        <meta property="og:description" content="Discover top youth & high school basketball and soccer recruits, view verified athletic player cards, watch live court streams, and connect with college scouts." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://istartu.com/" />
+        <meta property="og:image" content="/icon.svg" />
+        <meta property="og:site_name" content="FSMEC Sports Network" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FSMEC Global Scouting Platform" />
+        <meta name="twitter:description" content="Discover top youth & high school basketball and soccer recruits, view verified athletic player cards, watch live court streams, and connect with college scouts." />
+        <meta name="twitter:image" content="/icon.svg" />
       </Helmet>
       
       {/* Hero Section */}
       <section className="flex flex-col items-center text-center max-w-4xl gap-6 sm:gap-8 mt-6 sm:mt-10">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-50 border border-gray-200 text-[10px] sm:text-xs font-black uppercase tracking-widest text-gray-500">
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-          The Global Scouting Network
+          The Global Scouting Network • A Subsidiary of Garexcell Sports
         </div>
         
         <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter leading-[1] text-gray-900">
@@ -343,6 +349,24 @@ export default function LandingPage() {
           Register as a Recruit
         </button>
       </section>
+
+      {/* Floating Action Button (FAB) for free player card creation */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => navigate('/create/player-card')}
+          className="bg-black text-white hover:bg-gray-900 rounded-full py-4 px-6 shadow-2xl flex items-center gap-2.5 font-bold text-sm tracking-tight border border-white/10 group cursor-pointer"
+        >
+          <div className="w-8 h-8 rounded-full bg-yellow-400 text-black flex items-center justify-center animate-pulse shrink-0">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <span className="flex flex-col items-start leading-none text-left">
+            <span className="text-[10px] text-gray-400 font-black uppercase tracking-wider">Free Athlete Tool</span>
+            <span className="text-white font-bold text-sm">Create Player Card</span>
+          </span>
+        </motion.button>
+      </div>
 
     </div>
   );
