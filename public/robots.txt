@@ -1,4 +1,13 @@
 User-agent: *
 Allow: /
+Allow: /contact
+Allow: /rankings
+Allow: /showcase
+Allow: /contact
+Allow: /tips
+Allow: /tv
+Allow: /partner/request
+Allow: /profile/:PlayerId
+Disallow: /auth
 
 Sitemap: /sitemap.xml
